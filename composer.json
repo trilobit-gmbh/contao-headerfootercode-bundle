@@ -1,0 +1,39 @@
+{
+    "name": "trilobit-gmbh/contao-headerfootercode-bundle",
+    "type": "contao-bundle",
+    "description": "Contao 4 header- and footer code bundle",
+    "license": "LGPL-3.0+",
+    "authors": [
+        {
+            "name": "trilobit GmbH",
+            "homepage": "https://github.com/trilobit-gmbh"
+        }
+    ],
+    "require": {
+        "php": "^5.6|^7.0",
+        "contao/core-bundle": "~4.4"
+    },
+    "require-dev": {
+        "contao/manager-plugin": "^2.0"
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Trilobit\\HeaderfootercodeBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/",
+            "src/Resources/contao/languages/",
+            "src/Resources/contao/templates/"
+        ]
+    },
+    "extra": {
+        "contao-manager-plugin": "Trilobit\\HeaderfootercodeBundle\\ContaoManager\\Plugin"
+    }
+}

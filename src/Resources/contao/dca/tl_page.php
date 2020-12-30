@@ -17,6 +17,13 @@ $GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace
     $GLOBALS['TL_DCA']['tl_page']['palettes']['root']
 );
 
+$GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback'] = str_replace
+(
+    '{dns_legend',
+    '{headerfootercode_legend},hfc_header,hfc_footer,hfc_inheritance;{dns_legend',
+    $GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback']
+);
+
 
 /**
  * Fields

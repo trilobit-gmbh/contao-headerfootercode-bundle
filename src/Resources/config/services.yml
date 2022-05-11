@@ -1,0 +1,4 @@
+services:
+  trilobit_contao_headerfootercode.listener.parse_templates:
+    class: Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener
+    public: true

@@ -24,7 +24,7 @@ class ParseTemplateListener
     public function __invoke(Template $template)
     {
         if ((isset($GLOBALS['hfc_stop']) && true === $GLOBALS['hfc_stop'])
-            || TL_MODE !== 'FE'
+            || 'FE' !== TL_MODE
             || 'fe_' !== substr($template->getName(), 0, 3)
         ) {
             return;
@@ -42,39 +42,40 @@ class ParseTemplateListener
         while ($parentPages->next()) {
             $row = PageModel::findWithDetails($parentPages->id);
 
-            if ($row->id === $objPage->id
-                && (\strlen($row->hfc_header) || \strlen($row->hfc_footer))
-            ) {
-                // add header- and footer code
+            // current page
+            if ($row->id === $objPage->id) {
                 if ('0' === $row->hfc_mode) {
-                    $bufferHead .= \PHP_EOL.$row->hfc_header;
-                    $bufferFoot .= \PHP_EOL.$row->hfc_footer;
-                }
-                // only current header- and footer code
-                else {
-                    $bufferHead = $row->hfc_header;
-                    $bufferFoot = $row->hfc_footer;
+                    if (\strlen($row->hfc_header)) {
+                        $bufferHead .= \PHP_EOL.$row->hfc_header;
+                    }
+
+                    if (\strlen($row->hfc_footer)) {
+                        $bufferFoot .= \PHP_EOL.$row->hfc_footer;
+                    }
+                } else {
+                    if (\strlen($row->hfc_header)) {
+                        $bufferHead = $row->hfc_header;
+                    }
+
+                    if (\strlen($row->hfc_footer)) {
+                        $bufferFoot = $row->hfc_footer;
+                    }
                     break;
                 }
             }
 
-            // parent page
+            // parent page(s)
             if ($row->id !== $objPage->id
                 && '1' === $row->hfc_inheritance
-                && (\strlen($row->hfc_header) || \strlen($row->hfc_footer))
             ) {
-                // add header code
                 if (\strlen($row->hfc_header)) {
                     $bufferHead .= \PHP_EOL.$row->hfc_header;
                 }
 
-                // add footer code
                 if (\strlen($row->hfc_footer)) {
                     $bufferFoot .= \PHP_EOL.$row->hfc_footer;
                 }
             }
-
-            // current page
         }
 
         $GLOBALS['TL_HEAD'][] = Controller::replaceInsertTags($bufferHead);

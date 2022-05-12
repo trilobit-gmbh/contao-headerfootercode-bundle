@@ -7,23 +7,20 @@
  * @link       http://github.com/trilobit-gmbh/contao-calculator-bundle
  */
 
-$GLOBALS['TL_DCA']['tl_page']['palettes']['regular'] = str_replace(
-    '{protected_legend',
-    '{headerfootercode_legend},hfc_header,hfc_footer,hfc_inheritance,hfc_mode;{protected_legend',
-    $GLOBALS['TL_DCA']['tl_page']['palettes']['regular']
-);
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
-$GLOBALS['TL_DCA']['tl_page']['palettes']['root'] = str_replace(
-    '{dns_legend',
-    '{headerfootercode_legend},hfc_header,hfc_footer,hfc_inheritance;{dns_legend',
-    $GLOBALS['TL_DCA']['tl_page']['palettes']['root']
-);
+PaletteManipulator::create()
+    ->addLegend('headerfootercode_legend', 'protected_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField(['hfc_header', 'hfc_footer', 'hfc_inheritance,hfc_mode'], 'headerfootercode_legend', PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('regular', 'tl_page')
+;
 
-$GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback'] = str_replace(
-    '{dns_legend',
-    '{headerfootercode_legend},hfc_header,hfc_footer,hfc_inheritance;{dns_legend',
-    $GLOBALS['TL_DCA']['tl_page']['palettes']['rootfallback']
-);
+PaletteManipulator::create()
+    ->addLegend('headerfootercode_legend', 'meta_legend', PaletteManipulator::POSITION_BEFORE)
+    ->addField(['hfc_header', 'hfc_footer', 'hfc_inheritance,hfc_mode'], 'headerfootercode_legend', PaletteManipulator::POSITION_APPEND)
+    ->applyToPalette('root', 'tl_page')
+    ->applyToPalette('rootfallback', 'tl_page')
+;
 
 /*
  * Fields

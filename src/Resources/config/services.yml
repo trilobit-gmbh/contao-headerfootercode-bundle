@@ -1,4 +1,11 @@
 services:
-  trilobit_contao_headerfootercode.listener.parse_templates:
-    class: Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener
+  _instanceof:
+    Symfony\Component\DependencyInjection\ContainerAwareInterface:
+      calls:
+        - ['setContainer', ['@service_container']]
+  _defaults:
+    autowire: true
+    autoconfigure: true
     public: true
+
+  Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener: ~

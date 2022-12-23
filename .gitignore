@@ -1,15 +1,6 @@
-# OS
-.DS_Store
-Thumbs.db
+/.php_cs.cache
+.idea
 
-# IDEs
-.buildpath
-.project
-.settings/
-.build/
-.idea/
-nbproject/
-
-# Composer
 /vendor
 /composer.lock
+/.php-cs-fixer.cache

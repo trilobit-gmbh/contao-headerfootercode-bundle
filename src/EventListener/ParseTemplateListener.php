@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * @copyright  trilobit GmbH
  * @author     trilobit GmbH <https://github.com/trilobit-gmbh>
  * @license    LGPL-3.0-or-later
- * @link       http://github.com/trilobit-gmbh/contao-calculator-bundle
  */
 
 namespace Trilobit\HeaderfootercodeBundle\EventListener;
@@ -23,8 +24,21 @@ class ParseTemplateListener
      */
     public function __invoke(Template $template)
     {
+        $request = \Contao\System::getContainer()
+            ->get('request_stack')
+            ->getCurrentRequest()
+        ;
+
+        $isBackend = false;
+        if ($request && \Contao\System::getContainer()
+                ->get('contao.routing.scope_matcher')
+                ->isBackendRequest($request)
+        ) {
+            $isBackend = true;
+        }
+
         if ((isset($GLOBALS['hfc_stop']) && true === $GLOBALS['hfc_stop'])
-            || 'FE' !== TL_MODE
+            || $isBackend
             || 'fe_' !== substr($template->getName(), 0, 3)
         ) {
             return;

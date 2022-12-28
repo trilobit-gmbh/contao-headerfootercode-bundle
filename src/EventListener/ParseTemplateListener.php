@@ -11,8 +11,11 @@ declare(strict_types=1);
 namespace Trilobit\HeaderfootercodeBundle\EventListener;
 
 use Contao\Controller;
+use Contao\CoreBundle\ContaoCoreBundle;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageModel;
+use Contao\System;
 use Contao\Template;
 
 class ParseTemplateListener
@@ -24,21 +27,10 @@ class ParseTemplateListener
      */
     public function __invoke(Template $template)
     {
-        $request = \Contao\System::getContainer()
-            ->get('request_stack')
-            ->getCurrentRequest()
-        ;
-
-        $isBackend = false;
-        if ($request && \Contao\System::getContainer()
-                ->get('contao.routing.scope_matcher')
-                ->isBackendRequest($request)
-        ) {
-            $isBackend = true;
-        }
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
 
         if ((isset($GLOBALS['hfc_stop']) && true === $GLOBALS['hfc_stop'])
-            || $isBackend
+            || ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request))
             || 'fe_' !== substr($template->getName(), 0, 3)
         ) {
             return;
@@ -59,19 +51,19 @@ class ParseTemplateListener
             // current page
             if ($row->id === $objPage->id) {
                 if ('0' === $row->hfc_mode) {
-                    if (\strlen($row->hfc_header)) {
+                    if (null !== $row->hfc_header && \strlen($row->hfc_header)) {
                         $bufferHead .= \PHP_EOL.$row->hfc_header;
                     }
 
-                    if (\strlen($row->hfc_footer)) {
+                    if (null !== $row->hfc_footer && \strlen($row->hfc_footer)) {
                         $bufferFoot .= \PHP_EOL.$row->hfc_footer;
                     }
                 } else {
-                    if (\strlen($row->hfc_header)) {
+                    if (null !== $row->hfc_header && \strlen($row->hfc_header)) {
                         $bufferHead = $row->hfc_header;
                     }
 
-                    if (\strlen($row->hfc_footer)) {
+                    if (null !== $row->hfc_footer && \strlen($row->hfc_footer)) {
                         $bufferFoot = $row->hfc_footer;
                     }
                     break;
@@ -82,18 +74,27 @@ class ParseTemplateListener
             if ($row->id !== $objPage->id
                 && '1' === $row->hfc_inheritance
             ) {
-                if (\strlen($row->hfc_header)) {
+                if (null !== $row->hfc_header && \strlen($row->hfc_header)) {
                     $bufferHead .= \PHP_EOL.$row->hfc_header;
                 }
 
-                if (\strlen($row->hfc_footer)) {
+                if (null !== $row->hfc_footer && \strlen($row->hfc_footer)) {
                     $bufferFoot .= \PHP_EOL.$row->hfc_footer;
                 }
             }
         }
 
-        $GLOBALS['TL_HEAD'][] = Controller::replaceInsertTags($bufferHead);
-        $GLOBALS['TL_BODY'][] = Controller::replaceInsertTags($bufferFoot);
+        $version = (method_exists(ContaoCoreBundle::class, 'getVersion') ? ContaoCoreBundle::getVersion() : VERSION);
+
+        if (version_compare($version, '5.0', '>=')) {
+            $insertTag = System::getContainer()->get('contao.insert_tag.parser');
+
+            $GLOBALS['TL_HEAD'][] = $insertTag->replace($bufferHead);
+            $GLOBALS['TL_BODY'][] = $insertTag->replace($bufferFoot);
+        } else {
+            $GLOBALS['TL_HEAD'][] = Controller::replaceInsertTags($bufferHead);
+            $GLOBALS['TL_BODY'][] = Controller::replaceInsertTags($bufferFoot);
+        }
 
         $GLOBALS['hfc_stop'] = true;
     }

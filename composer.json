@@ -1,6 +1,6 @@
 {
     "name": "trilobit-gmbh/contao-headerfootercode-bundle",
-    "description": "Contao 4 header- and footer code bundle",
+    "description": "Contao 4 / Contao 5 header- and footer code bundle",
     "type": "contao-bundle",
     "license": "LGPL-3.0-or-later",
     "authors": [

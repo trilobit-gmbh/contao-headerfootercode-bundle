@@ -1,7 +1,7 @@
 {
     "name": "trilobit-gmbh/contao-headerfootercode-bundle",
+    "description": "Contao 4 / Contao 5 header- and footer code bundle",
     "type": "contao-bundle",
-    "description": "Contao 4 header- and footer code bundle",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
@@ -10,15 +10,13 @@
         }
     ],
     "require": {
-        "php": "^7.3||^8.0",
-        "contao/core-bundle": "~4.4"
+        "php": "^7.3 || ^8.0",
+        "contao/core-bundle": "^4.9 || ^5.0"
     },
     "require-dev": {
-        "contao/manager-plugin": "^2.0",
-        "friendsofphp/php-cs-fixer": "^2.1"
-    },
-    "conflict": {
-        "contao/manager-plugin": "<2.0 || >=3.0"
+        "contao/easy-coding-standard": "^3.0",
+        "contao/manager-plugin": "^2.3",
+        "friendsofphp/php-cs-fixer": "^v3.1.0"
     },
     "autoload": {
         "psr-4": {
@@ -40,7 +38,8 @@
     "config": {
         "allow-plugins": {
             "contao-components/installer": true,
-            "contao/manager-plugin": true
+            "contao/manager-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }

@@ -18,8 +18,10 @@ Der zusätzliche Header- und Footer Code wird über die Seiteneigenschaften gepf
 Dieses Bundle basiert auf der Erweiterung contao-header-code für Contao 3 von Leo Unglaub.
 
 
+
 Compatibility
 -------------
 
-- Contao version ~4.4
 - Contao version ~4.9
+- Contao version ~4.13
+- Contao version ~5.0

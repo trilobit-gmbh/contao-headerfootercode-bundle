@@ -1,11 +1,11 @@
 services:
-  _instanceof:
-    Symfony\Component\DependencyInjection\ContainerAwareInterface:
-      calls:
-        - ['setContainer', ['@service_container']]
-  _defaults:
-    autowire: true
-    autoconfigure: true
-    public: true
+#  _instanceof:
+#    Contao\CoreBundle\Framework\FrameworkAwareInterface:
+#      calls:
+#        - ['setContainer', ['@service_container']]
+#  _defaults:
+#    autowire: true
+#    autoconfigure: true
+#    public: true
 
   Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener: ~

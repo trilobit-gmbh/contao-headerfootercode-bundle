@@ -1,11 +1,10 @@
 services:
-#  _instanceof:
-#    Contao\CoreBundle\Framework\FrameworkAwareInterface:
-#      calls:
-#        - ['setContainer', ['@service_container']]
-#  _defaults:
-#    autowire: true
-#    autoconfigure: true
-#    public: true
+    _defaults:
+        autoconfigure: true
 
-  Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener: ~
+    _instanceof:
+        Contao\CoreBundle\Framework\FrameworkAwareInterface:
+            calls:
+                - [setFramework, ['@contao.framework']]
+
+    Trilobit\HeaderfootercodeBundle\EventListener\ParseTemplateListener: ~

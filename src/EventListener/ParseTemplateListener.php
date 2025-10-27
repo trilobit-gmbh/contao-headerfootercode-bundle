@@ -12,8 +12,6 @@ namespace Trilobit\HeaderfootercodeBundle\EventListener;
 
 use Contao\Controller;
 use Contao\CoreBundle\ContaoCoreBundle;
-use Contao\CoreBundle\InsertTag\InsertTagParser;
-use Contao\CoreBundle\ServiceAnnotation\Hook;
 use Contao\PageModel;
 use Contao\System;
 use Contao\Template;
@@ -132,14 +130,16 @@ class ParseTemplateListener
 
         $version = (method_exists(ContaoCoreBundle::class, 'getVersion') ? ContaoCoreBundle::getVersion() : VERSION);
 
-        if (version_compare($version, '5.0', '>=')) {
+        if (version_compare($version, '5.0', '<')
+            && version_compare($version, '5.x-dev', 'ne')
+        ) {
+            $GLOBALS['TL_HEAD'][] = Controller::replaceInsertTags($bufferHead);
+            $GLOBALS['TL_BODY'][] = Controller::replaceInsertTags($bufferFoot);
+        } else {
             $insertTag = System::getContainer()->get('contao.insert_tag.parser');
 
             $GLOBALS['TL_HEAD'][] = $insertTag->replace($bufferHead);
             $GLOBALS['TL_BODY'][] = $insertTag->replace($bufferFoot);
-        } else {
-            $GLOBALS['TL_HEAD'][] = Controller::replaceInsertTags($bufferHead);
-            $GLOBALS['TL_BODY'][] = Controller::replaceInsertTags($bufferFoot);
         }
 
         $GLOBALS['hfc_stop'] = true;

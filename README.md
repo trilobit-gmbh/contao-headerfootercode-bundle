@@ -22,6 +22,6 @@ Dieses Bundle basiert auf der Erweiterung contao-header-code für Contao 3 von L
 Compatibility
 -------------
 
-- Contao version ~4.9
 - Contao version ~4.13
-- Contao version ~5.0
+- Contao version ~5.3
+- Contao version ~5.7
